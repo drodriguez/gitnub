@@ -20,7 +20,9 @@ class InfoWindowController < OSX::NSWindowController
   end
   
   def awakeFromNib
-    clone_url = @repo.git.config({}, "--get", "remote.origin.url").gsub("\n", '')
+    remote_name = @repo.git.config({}, "--get", "branch.master.remote").chomp
+    remote_name ||= 'origin'
+    clone_url = @repo.git.config({}, "--get", "remote.#{remote_name}.url").chomp
     @clone_url.stringValue = clone_url
     
     @commits_count.stringValue = @repo.commit_count
