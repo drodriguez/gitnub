@@ -37,6 +37,7 @@ class CommitsController < OSX::NSObject
     end
     
     if(fetch_git_repository)
+      @branch = @repo.git.branch.split("\n").select {|i| /\*/ =~ i }.first[2..-1]
       setup_commit_detail_view
       fetch_commits_for @branch, @offset
       setup_branches_menu
